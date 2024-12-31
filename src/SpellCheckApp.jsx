@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // Define a custom dictionary of words and their corrections
 const customDictionary = {
@@ -8,18 +8,13 @@ const customDictionary = {
   exampl: "example",
 };
 
-class SpellCheckApp extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      inputText: "",
-      suggestedText: "",
-    };
-  }
+const SpellCheckApp = (props) => {
+  const [inputText, setInputText] = useState("");
+  const [suggestedText, setSuggestText] = useState("");
 
-  handleInputChange = (e) => {
+  const handleInputChange = (e) => {
     const text = e.target.value;
-    this.setState({ inputText: text });
+    setInputText(text);
 
     // Implement a basic spelling check and correction
     const words = text.split(" ");
@@ -34,28 +29,26 @@ class SpellCheckApp extends React.Component {
     const firstCorrection = correctedWords.find(
       (word, index) => word !== words[index]
     );
-    this.setState({ suggestedText: firstCorrection || "" });
+    setSuggestText(firstCorrection || "");
   };
 
-  render() {
-    return (
-      <div>
-        <h1>Spell Check and Auto-Correction</h1>
-        <textarea
-          value={this.state.inputText}
-          onChange={this.handleInputChange}
-          placeholder="Enter text..."
-          rows={5}
-          cols={40}
-        />
-        {this.state.suggestedText && (
-          <p>
-            Did you mean: <strong>{this.state.suggestedText}</strong>?
-          </p>
-        )}
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <h1>Spell Check and Auto-Correction</h1>
+      <textarea
+        value={inputText}
+        onChange={handleInputChange}
+        placeholder="Enter text..."
+        rows={5}
+        cols={40}
+      />
+      {suggestedText && (
+        <p>
+          Did you mean: <strong>{suggestedText}</strong>?
+        </p>
+      )}
+    </div>
+  );
+};
 
 export default SpellCheckApp;
